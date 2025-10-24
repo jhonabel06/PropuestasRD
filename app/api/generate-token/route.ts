@@ -9,12 +9,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing code' }, { status: 400 })
     }
 
-    const YUJU_API_URL = process.env.YUJU_API_URL
-    const CLIENT_ID_YUJU = process.env.CLIENT_ID_YUJU
-    const SECRET_KEY_YUJU = process.env.SECRET_KEY_YUJU
+    const YUJU_API_URL = process.env.YUJU_API_URL;
+    const CLIENT_ID_YUJU = process.env.CLIENT_ID_YUJU;
+    const SECRET_KEY_YUJU = process.env.SECRET_KEY_YUJU;
+
+    console.log(SECRET_KEY_YUJU);
+    console.log(CLIENT_ID_YUJU);
+    console.log(YUJU_API_URL);
+
 
     if (!YUJU_API_URL || !CLIENT_ID_YUJU || !SECRET_KEY_YUJU) {
-      return NextResponse.json({ error: 'Server misconfigured ' + YUJU_API_URL }, { status: 500 })
+      return NextResponse.json({ error: 'Test variable ' + YUJU_API_URL + ' otro ' + CLIENT_ID_YUJU + '  otro  ' + SECRET_KEY_YUJU }, { status: 500 })
     }
 
     const res = await fetch(`${YUJU_API_URL}/auth-generate-token`, {
@@ -22,6 +27,7 @@ export async function POST(request: Request) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code, client_id: CLIENT_ID_YUJU, secret_key: SECRET_KEY_YUJU }),
     })
+    console.log(body);
 
     const data = await res.json()
     const token = data?.token ?? null
