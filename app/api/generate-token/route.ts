@@ -14,8 +14,7 @@ export async function POST(request: Request) {
     const SECRET_KEY_YUJU = process.env.SECRET_KEY_YUJU
 
     if (!YUJU_API_URL || !CLIENT_ID_YUJU || !SECRET_KEY_YUJU) {
-      console.log(YUJU_API_URL, CLIENT_ID_YUJU,SECRET_KEY_YUJU);
-      return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
+      return NextResponse.json({ error: 'Server misconfigured ' + YUJU_API_URL }, { status: 500 })
     }
 
     const res = await fetch(`${YUJU_API_URL}/auth-generate-token`, {
