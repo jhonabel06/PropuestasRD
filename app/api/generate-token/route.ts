@@ -9,7 +9,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing code' }, { status: 400 })
     }
 
-    const YUJU_API_URL = process.env.YUJU_API_URL;
+    const YUJU_API_URL = " https://api.tp.yuju.io";
     const CLIENT_ID_YUJU = process.env.CLIENT_ID_YUJU;
     const SECRET_KEY_YUJU = process.env.SECRET_KEY_YUJU;
 
