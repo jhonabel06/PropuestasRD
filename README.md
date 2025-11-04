@@ -89,13 +89,17 @@ propuestas-rd/
 - **Panel de administración protegido con login**
 - **Sistema de autenticación con JWT**
 - **API REST completa para CRUD de propuestas**
+- **API REST completa para CRUD de partidos políticos**
+- **Gestión dinámica de partidos** (crear, editar, eliminar)
 - **Almacenamiento en JSON** (fácil migración a BD)
 - **Notificaciones toast** para feedback
+- **Interface con tabs** para organizar propuestas y partidos
 
 ⚠️ **Pendiente:**
 - Conexión a base de datos real
 - Páginas: /partidos, /noticias, /contacto completas
 - Sistema de búsqueda funcional
+- Filtros funcionales en página principal
 - Paginación
 - Menú mobile
 - Editor WYSIWYG para descripciones
@@ -154,6 +158,81 @@ JWT_SECRET=tu-clave-secreta-super-segura-aleatoria
 4. **Acceso al panel de administración**:
    - Login: http://localhost:3000/admin/login
    - Panel: http://localhost:3000/admin (requiere autenticación)
+
+## 📝 Gestión de Propuestas
+
+### Ejemplo de HTML para Descripciones
+
+Las descripciones de propuestas soportan HTML para un formato rico. Aquí tienes una plantilla completa:
+
+```html
+<h2>Resumen Ejecutivo</h2>
+<p>Descripción general de la propuesta que explica los objetivos principales y el impacto esperado en la población dominicana.</p>
+
+<h2>Objetivos Principales</h2>
+<ul>
+  <li>Primer objetivo específico y medible</li>
+  <li>Segundo objetivo con metas claras</li>
+  <li>Tercer objetivo con indicadores de éxito</li>
+  <li>Cuarto objetivo con resultados esperados</li>
+</ul>
+
+<h2>Fases de Implementación</h2>
+<p><strong>Fase 1 (Año 1):</strong> Diagnóstico nacional de infraestructura y capacitación inicial en escuelas piloto.</p>
+<p><strong>Fase 2 (Año 2-3):</strong> Expansión del programa a nivel nacional y desarrollo de contenido específico.</p>
+<p><strong>Fase 3 (Año 4-5):</strong> Consolidación, evaluación de impacto y ajustes necesarios.</p>
+
+<h2>Presupuesto Estimado</h2>
+<p>El programa requiere una inversión de <strong>RD$3,500 millones</strong> distribuidos en cinco años, financiados mediante el presupuesto nacional y cooperación internacional.</p>
+
+<h2>Beneficiarios Directos</h2>
+<ul>
+  <li>500,000 estudiantes de escuelas públicas</li>
+  <li>20,000 docentes capacitados</li>
+  <li>1,500 instituciones educativas</li>
+</ul>
+
+<h2>Impacto Esperado</h2>
+<p>Se espera que al finalizar el programa, el <strong>95% de los estudiantes</strong> de escuelas públicas tengan competencias digitales básicas, mejorando su empleabilidad futura y reduciendo la desigualdad educativa.</p>
+
+<h2>Indicadores de Éxito</h2>
+<ol>
+  <li>Porcentaje de estudiantes con acceso a tecnología</li>
+  <li>Nivel de competencias digitales adquiridas</li>
+  <li>Satisfacción de docentes con la capacitación</li>
+  <li>Mejora en rendimiento académico en áreas STEM</li>
+</ol>
+
+<h2>Fuentes de Financiamiento</h2>
+<p>Este proyecto será financiado mediante:</p>
+<ul>
+  <li>Presupuesto Nacional de Educación (60%)</li>
+  <li>Cooperación Internacional (30%)</li>
+  <li>Alianzas Público-Privadas (10%)</li>
+</ul>
+```
+
+### Etiquetas HTML Soportadas
+
+| Etiqueta | Uso | Ejemplo |
+|----------|-----|---------|
+| `<h2>`, `<h3>` | Títulos de secciones | `<h2>Objetivos</h2>` |
+| `<p>` | Párrafos de texto | `<p>Descripción...</p>` |
+| `<ul>`, `<li>` | Listas sin orden | `<ul><li>Item</li></ul>` |
+| `<ol>`, `<li>` | Listas ordenadas | `<ol><li>Primero</li></ol>` |
+| `<strong>`, `<b>` | Texto en negrita | `<strong>Importante</strong>` |
+| `<em>`, `<i>` | Texto en cursiva | `<em>Énfasis</em>` |
+| `<a href="">` | Enlaces externos | `<a href="url">Texto</a>` |
+| `<blockquote>` | Citas textuales | `<blockquote>Cita</blockquote>` |
+
+### Consejos para Descripciones Efectivas
+
+✅ **Usa estructura clara**: Divide en secciones con `<h2>`  
+✅ **Listas para objetivos**: Facilita la lectura  
+✅ **Números concretos**: Incluye cifras y porcentajes  
+✅ **Negritas para énfasis**: Resalta datos clave con `<strong>`  
+✅ **Fases claras**: Especifica timeline de implementación  
+✅ **Impacto medible**: Indica indicadores de éxito  
 
 ## 🌐 Despliegue
 

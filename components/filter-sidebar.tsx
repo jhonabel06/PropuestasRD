@@ -1,23 +1,39 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-const partidos = [
-  { id: "pld", nombre: "PLD", color: "#8B4789" },
-  { id: "prm", nombre: "PRM", color: "#00A651" },
-  { id: "fuerza", nombre: "Fuerza del Pueblo", color: "#FF6B35" },
-  { id: "prsc", nombre: "PRSC", color: "#DC143C" },
-]
+interface Partido {
+  id: string
+  nombre: string
+  nombreCompleto: string
+  color: string
+  activo: boolean
+}
 
 const temas = ["Educación", "Economía", "Salud", "Transporte", "Seguridad", "Medio Ambiente", "Tecnología", "Turismo"]
 
 export function FilterSidebar() {
+  const [partidos, setPartidos] = useState<Partido[]>([])
   const [selectedPartidos, setSelectedPartidos] = useState<string[]>([])
   const [selectedTemas, setSelectedTemas] = useState<string[]>([])
+
+  useEffect(() => {
+    loadPartidos()
+  }, [])
+
+  const loadPartidos = async () => {
+    try {
+      const response = await fetch("/api/partidos")
+      const data = await response.json()
+      setPartidos(data.filter((p: Partido) => p.activo))
+    } catch (error) {
+      console.error("Error al cargar partidos:", error)
+    }
+  }
 
   const handlePartidoChange = (partidoId: string) => {
     setSelectedPartidos((prev) =>

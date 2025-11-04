@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Trash2, Edit2, Plus, Save, X, LogOut } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Trash2, Edit2, Plus, Save, X, LogOut, Flag } from "lucide-react"
 import { toast } from "sonner"
 
 interface Propuesta {
@@ -27,12 +28,15 @@ interface Propuesta {
   descripcion?: string
 }
 
-const PARTIDOS = [
-  { nombre: "PRM", color: "#00A651" },
-  { nombre: "PLD", color: "#8B4789" },
-  { nombre: "Fuerza del Pueblo", color: "#FF6B35" },
-  { nombre: "PRSC", color: "#DC143C" },
-]
+interface Partido {
+  id: string
+  nombre: string
+  nombreCompleto: string
+  color: string
+  descripcion?: string
+  sitioWeb?: string
+  activo: boolean
+}
 
 const TEMAS = [
   "Educación",
@@ -48,6 +52,8 @@ const TEMAS = [
 export default function AdminPage() {
   const router = useRouter()
   const [authenticated, setAuthenticated] = useState(false)
+  
+  // Estados para propuestas
   const [propuestas, setPropuestas] = useState<Propuesta[]>([])
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -64,6 +70,19 @@ export default function AdminPage() {
     descripcion: "",
   })
 
+  // Estados para partidos
+  const [partidos, setPartidos] = useState<Partido[]>([])
+  const [editingPartidoId, setEditingPartidoId] = useState<string | null>(null)
+  const [showPartidoForm, setShowPartidoForm] = useState(false)
+  const [partidoFormData, setPartidoFormData] = useState<Partial<Partido>>({
+    nombre: "",
+    nombreCompleto: "",
+    color: "#000000",
+    descripcion: "",
+    sitioWeb: "",
+    activo: true,
+  })
+
   useEffect(() => {
     checkAuth()
   }, [])
@@ -74,6 +93,7 @@ export default function AdminPage() {
       if (response.ok) {
         setAuthenticated(true)
         loadPropuestas()
+        loadPartidos()
       } else {
         router.push("/admin/login")
       }
@@ -92,6 +112,8 @@ export default function AdminPage() {
     }
   }
 
+  // ============ FUNCIONES PARA PROPUESTAS ============
+  
   const loadPropuestas = async () => {
     try {
       const response = await fetch("/api/propuestas")
@@ -106,7 +128,7 @@ export default function AdminPage() {
   }
 
   const handlePartidoChange = (partido: string) => {
-    const partidoData = PARTIDOS.find((p) => p.nombre === partido)
+    const partidoData = partidos.find((p) => p.nombre === partido)
     setFormData({
       ...formData,
       partido,
@@ -202,6 +224,102 @@ export default function AdminPage() {
     setShowForm(false)
   }
 
+  // ============ FUNCIONES PARA PARTIDOS ============
+
+  const loadPartidos = async () => {
+    try {
+      const response = await fetch("/api/partidos")
+      const data = await response.json()
+      setPartidos(data)
+    } catch (error) {
+      toast.error("Error al cargar partidos")
+      console.error(error)
+    }
+  }
+
+  const handlePartidoSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!partidoFormData.nombre || !partidoFormData.nombreCompleto || !partidoFormData.color) {
+      toast.error("Por favor completa todos los campos requeridos")
+      return
+    }
+
+    try {
+      if (editingPartidoId) {
+        const response = await fetch(`/api/partidos/${editingPartidoId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(partidoFormData),
+        })
+
+        if (response.ok) {
+          toast.success("Partido actualizado exitosamente")
+          loadPartidos()
+          resetPartidoForm()
+        } else {
+          toast.error("Error al actualizar partido")
+        }
+      } else {
+        const response = await fetch("/api/partidos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(partidoFormData),
+        })
+
+        if (response.ok) {
+          toast.success("Partido creado exitosamente")
+          loadPartidos()
+          resetPartidoForm()
+        } else {
+          toast.error("Error al crear partido")
+        }
+      }
+    } catch (error) {
+      toast.error("Error al guardar partido")
+      console.error(error)
+    }
+  }
+
+  const handleEditPartido = (partido: Partido) => {
+    setPartidoFormData(partido)
+    setEditingPartidoId(partido.id)
+    setShowPartidoForm(true)
+  }
+
+  const handleDeletePartido = async (id: string) => {
+    if (!confirm("¿Estás seguro de que deseas eliminar este partido?")) return
+
+    try {
+      const response = await fetch(`/api/partidos/${id}`, {
+        method: "DELETE",
+      })
+
+      if (response.ok) {
+        toast.success("Partido eliminado exitosamente")
+        loadPartidos()
+      } else {
+        toast.error("Error al eliminar partido")
+      }
+    } catch (error) {
+      toast.error("Error al eliminar partido")
+      console.error(error)
+    }
+  }
+
+  const resetPartidoForm = () => {
+    setPartidoFormData({
+      nombre: "",
+      nombreCompleto: "",
+      color: "#000000",
+      descripcion: "",
+      sitioWeb: "",
+      activo: true,
+    })
+    setEditingPartidoId(null)
+    setShowPartidoForm(false)
+  }
+
   if (loading || !authenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -219,27 +337,39 @@ export default function AdminPage() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-2">Panel de Administración</h1>
-              <p className="text-muted-foreground">Gestiona las propuestas de los partidos políticos</p>
+              <p className="text-muted-foreground">Gestiona propuestas y partidos políticos</p>
             </div>
-            <div className="flex gap-3">
-              <Button onClick={() => setShowForm(!showForm)} size="lg">
-                {showForm ? (
-                  <>
-                    <X className="mr-2 h-4 w-4" /> Cancelar
-                  </>
-                ) : (
-                  <>
-                    <Plus className="mr-2 h-4 w-4" /> Nueva Propuesta
-                  </>
-                )}
-              </Button>
-              <Button onClick={handleLogout} variant="outline" size="lg">
-                <LogOut className="mr-2 h-4 w-4" /> Cerrar Sesión
-              </Button>
-            </div>
+            <Button onClick={handleLogout} variant="outline" size="lg">
+              <LogOut className="mr-2 h-4 w-4" /> Cerrar Sesión
+            </Button>
           </div>
 
-          {/* Formulario */}
+          <Tabs defaultValue="propuestas" className="w-full">
+            <TabsList className="grid w-full max-w-md grid-cols-2 mb-6">
+              <TabsTrigger value="propuestas">Propuestas</TabsTrigger>
+              <TabsTrigger value="partidos">
+                <Flag className="mr-2 h-4 w-4" />
+                Partidos
+              </TabsTrigger>
+            </TabsList>
+
+            {/* TAB: PROPUESTAS */}
+            <TabsContent value="propuestas" className="space-y-4">
+              <div className="flex justify-end mb-4">
+                <Button onClick={() => setShowForm(!showForm)} size="lg">
+                  {showForm ? (
+                    <>
+                      <X className="mr-2 h-4 w-4" /> Cancelar
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="mr-2 h-4 w-4" /> Nueva Propuesta
+                    </>
+                  )}
+                </Button>
+              </div>
+
+          {/* Formulario Propuestas */}
           {showForm && (
             <Card className="mb-8">
               <CardHeader>
@@ -263,8 +393,8 @@ export default function AdminPage() {
                           <SelectValue placeholder="Selecciona un partido" />
                         </SelectTrigger>
                         <SelectContent>
-                          {PARTIDOS.map((partido) => (
-                            <SelectItem key={partido.nombre} value={partido.nombre}>
+                          {partidos.filter(p => p.activo).map((partido) => (
+                            <SelectItem key={partido.id} value={partido.nombre}>
                               {partido.nombre}
                             </SelectItem>
                           ))}
@@ -432,6 +562,215 @@ export default function AdminPage() {
               </div>
             )}
           </div>
+            </TabsContent>
+
+            {/* TAB: PARTIDOS */}
+            <TabsContent value="partidos" className="space-y-4">
+              <div className="flex justify-end mb-4">
+                <Button onClick={() => setShowPartidoForm(!showPartidoForm)} size="lg">
+                  {showPartidoForm ? (
+                    <>
+                      <X className="mr-2 h-4 w-4" /> Cancelar
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="mr-2 h-4 w-4" /> Nuevo Partido
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              {/* Formulario Partidos */}
+              {showPartidoForm && (
+                <Card className="mb-8">
+                  <CardHeader>
+                    <CardTitle>{editingPartidoId ? "Editar Partido" : "Nuevo Partido"}</CardTitle>
+                    <CardDescription>
+                      {editingPartidoId
+                        ? "Modifica los datos del partido político"
+                        : "Registra un nuevo partido político"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <form onSubmit={handlePartidoSubmit} className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Nombre Corto */}
+                        <div className="space-y-2">
+                          <Label htmlFor="nombre">
+                            Siglas/Nombre Corto <span className="text-destructive">*</span>
+                          </Label>
+                          <Input
+                            id="nombre"
+                            value={partidoFormData.nombre}
+                            onChange={(e) => setPartidoFormData({ ...partidoFormData, nombre: e.target.value })}
+                            placeholder="Ej: PRM"
+                            required
+                          />
+                        </div>
+
+                        {/* Nombre Completo */}
+                        <div className="space-y-2">
+                          <Label htmlFor="nombreCompleto">
+                            Nombre Completo <span className="text-destructive">*</span>
+                          </Label>
+                          <Input
+                            id="nombreCompleto"
+                            value={partidoFormData.nombreCompleto}
+                            onChange={(e) =>
+                              setPartidoFormData({ ...partidoFormData, nombreCompleto: e.target.value })
+                            }
+                            placeholder="Ej: Partido Revolucionario Moderno"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      {/* Color */}
+                      <div className="space-y-2">
+                        <Label htmlFor="color">
+                          Color Representativo <span className="text-destructive">*</span>
+                        </Label>
+                        <div className="flex gap-3 items-center">
+                          <Input
+                            id="color"
+                            type="color"
+                            value={partidoFormData.color}
+                            onChange={(e) => setPartidoFormData({ ...partidoFormData, color: e.target.value })}
+                            className="w-20 h-10"
+                            required
+                          />
+                          <Input
+                            type="text"
+                            value={partidoFormData.color}
+                            onChange={(e) => setPartidoFormData({ ...partidoFormData, color: e.target.value })}
+                            placeholder="#000000"
+                            className="flex-1"
+                          />
+                          <div
+                            className="w-10 h-10 rounded border"
+                            style={{ backgroundColor: partidoFormData.color }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Descripción */}
+                      <div className="space-y-2">
+                        <Label htmlFor="descripcion">Descripción</Label>
+                        <Textarea
+                          id="descripcion"
+                          value={partidoFormData.descripcion}
+                          onChange={(e) => setPartidoFormData({ ...partidoFormData, descripcion: e.target.value })}
+                          placeholder="Breve descripción del partido"
+                          rows={3}
+                        />
+                      </div>
+
+                      {/* Sitio Web */}
+                      <div className="space-y-2">
+                        <Label htmlFor="sitioWeb">Sitio Web</Label>
+                        <Input
+                          id="sitioWeb"
+                          type="url"
+                          value={partidoFormData.sitioWeb}
+                          onChange={(e) => setPartidoFormData({ ...partidoFormData, sitioWeb: e.target.value })}
+                          placeholder="https://ejemplo.com"
+                        />
+                      </div>
+
+                      {/* Estado Activo */}
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="activo"
+                          checked={partidoFormData.activo}
+                          onChange={(e) => setPartidoFormData({ ...partidoFormData, activo: e.target.checked })}
+                          className="w-4 h-4"
+                        />
+                        <Label htmlFor="activo" className="cursor-pointer">
+                          Partido Activo (aparecerá en los formularios)
+                        </Label>
+                      </div>
+
+                      <div className="flex gap-3 pt-4">
+                        <Button type="submit" size="lg">
+                          <Save className="mr-2 h-4 w-4" />
+                          {editingPartidoId ? "Actualizar Partido" : "Crear Partido"}
+                        </Button>
+                        <Button type="button" variant="outline" size="lg" onClick={resetPartidoForm}>
+                          Cancelar
+                        </Button>
+                      </div>
+                    </form>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Lista de partidos */}
+              <div className="space-y-4">
+                <h2 className="text-2xl font-bold">Partidos Registrados ({partidos.length})</h2>
+                {partidos.length === 0 ? (
+                  <Card>
+                    <CardContent className="py-12 text-center">
+                      <p className="text-muted-foreground">No hay partidos registrados. ¡Crea el primero!</p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="grid gap-4">
+                    {partidos.map((partido) => (
+                      <Card key={partido.id}>
+                        <CardHeader>
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                <div
+                                  className="w-8 h-8 rounded"
+                                  style={{ backgroundColor: partido.color }}
+                                  title={partido.color}
+                                />
+                                <CardTitle className="text-xl">{partido.nombre}</CardTitle>
+                                <Badge variant={partido.activo ? "default" : "secondary"}>
+                                  {partido.activo ? "Activo" : "Inactivo"}
+                                </Badge>
+                              </div>
+                              <p className="text-sm font-medium text-muted-foreground mb-1">
+                                {partido.nombreCompleto}
+                              </p>
+                              {partido.descripcion && (
+                                <CardDescription className="mt-2">{partido.descripcion}</CardDescription>
+                              )}
+                              {partido.sitioWeb && (
+                                <a
+                                  href={partido.sitioWeb}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-sm text-primary hover:underline mt-2 inline-block"
+                                >
+                                  {partido.sitioWeb}
+                                </a>
+                              )}
+                            </div>
+                            <div className="flex gap-2">
+                              <Button variant="outline" size="icon" onClick={() => handleEditPartido(partido)}>
+                                <Edit2 className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                onClick={() => handleDeletePartido(partido.id)}
+                                className="text-destructive hover:text-destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardHeader>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
 

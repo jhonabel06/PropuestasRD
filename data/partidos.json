@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "nombre": "PRM",
+    "nombreCompleto": "Partido Revolucionario Moderno",
+    "color": "#00A651",
+    "descripcion": "Partido político fundado en 2014",
+    "sitioWeb": "https://prm.org.do",
+    "activo": true
+  },
+  {
+    "id": "2",
+    "nombre": "PLD",
+    "nombreCompleto": "Partido de la Liberación Dominicana",
+    "color": "#8B4789",
+    "descripcion": "Partido político fundado en 1973 por Juan Bosch",
+    "sitioWeb": "https://pld.org.do",
+    "activo": true
+  },
+  {
+    "id": "3",
+    "nombre": "Fuerza del Pueblo",
+    "nombreCompleto": "Fuerza del Pueblo",
+    "color": "#FF6B35",
+    "descripcion": "Partido político fundado en 2019",
+    "sitioWeb": "https://fuerzadelpueblo.do",
+    "activo": true
+  },
+  {
+    "id": "4",
+    "nombre": "PRSC",
+    "nombreCompleto": "Partido Reformista Social Cristiano",
+    "color": "#DC143C",
+    "descripcion": "Partido político fundado en 1963",
+    "sitioWeb": "https://prsc.org.do",
+    "activo": true
+  }
+]
