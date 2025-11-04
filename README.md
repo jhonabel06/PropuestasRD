@@ -79,8 +79,10 @@ propuestas-rd/
 ## 🎨 Características Actuales
 
 ✅ **Implementado:**
-- Página principal con grid de propuestas
-- Sistema de filtros (partidos y temas)
+- Página principal con grid de propuestas y filtros funcionales
+- **Página `/propuestas` con lista completa** y búsqueda en tiempo real
+- Sistema de filtros dinámicos (partidos activos y temas)
+- **Colores de partidos sincronizados automáticamente** en todas las propuestas
 - Detalle de propuestas individual
 - Header con navegación
 - Footer con enlaces
@@ -91,19 +93,35 @@ propuestas-rd/
 - **API REST completa para CRUD de propuestas**
 - **API REST completa para CRUD de partidos políticos**
 - **Gestión dinámica de partidos** (crear, editar, eliminar)
+- **Actualización automática de colores** cuando se modifica un partido
+- **Filtros muestran solo partidos activos** en formularios
 - **Almacenamiento en JSON** (fácil migración a BD)
 - **Notificaciones toast** para feedback
 - **Interface con tabs** para organizar propuestas y partidos
+- **Búsqueda en tiempo real** por título, resumen y autor
 
 ⚠️ **Pendiente:**
 - Conexión a base de datos real
 - Páginas: /partidos, /noticias, /contacto completas
-- Sistema de búsqueda funcional
-- Filtros funcionales en página principal
 - Paginación
 - Menú mobile
 - Editor WYSIWYG para descripciones
 - Subida de imágenes
+
+## 🔄 Sistema de Colores Dinámicos
+
+El sistema actualiza automáticamente los colores de los partidos en las propuestas:
+
+- **Sincronización automática**: Al cambiar el color de un partido, todas sus propuestas se actualizan instantáneamente
+- **Sin duplicación**: Los colores se consultan dinámicamente desde la base de datos de partidos
+- **Función centralizada**: `lib/getPartidoColor.ts` maneja toda la lógica de colores
+- **Actualización en tiempo real**: El panel admin recarga las propuestas al actualizar un partido
+
+### Cómo funciona:
+1. Las propuestas se enriquecen con `enrichPropuestasWithColors()` al cargarlas
+2. Esta función busca el color actual del partido en la base de datos
+3. No se guarda el color en cada propuesta, solo la referencia al partido
+4. Los cambios se reflejan automáticamente en toda la aplicación
 
 ## 🎯 Partidos Políticos Configurados
 

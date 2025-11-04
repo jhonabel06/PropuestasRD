@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { enrichPropuestasWithColors } from './getPartidoColor'
 
 export interface Propuesta {
   id: string
@@ -30,7 +31,9 @@ function ensureDataDirectory() {
 export function getPropuestas(): Propuesta[] {
   ensureDataDirectory()
   const data = fs.readFileSync(dataFilePath, 'utf-8')
-  return JSON.parse(data)
+  const propuestas = JSON.parse(data)
+  // Enriquecer con colores actualizados de los partidos
+  return enrichPropuestasWithColors(propuestas)
 }
 
 export function getPropuestaById(id: string): Propuesta | null {

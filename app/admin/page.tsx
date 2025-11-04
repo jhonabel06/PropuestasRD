@@ -256,6 +256,7 @@ export default function AdminPage() {
         if (response.ok) {
           toast.success("Partido actualizado exitosamente")
           loadPartidos()
+          loadPropuestas() // Recargar propuestas para actualizar los colores
           resetPartidoForm()
         } else {
           toast.error("Error al actualizar partido")
