@@ -29,8 +29,8 @@ export default function HomePage() {
   const [filteredPropuestas, setFilteredPropuestas] = useState<Propuesta[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedPartido, setSelectedPartido] = useState('')
-  const [selectedTema, setSelectedTema] = useState('')
+  const [selectedPartidos, setSelectedPartidos] = useState<string[]>([])
+  const [selectedTemas, setSelectedTemas] = useState<string[]>([])
 
   // Cargar propuestas
   useEffect(() => {
@@ -56,14 +56,14 @@ export default function HomePage() {
   useEffect(() => {
     let result = [...propuestas]
 
-    // Filtro por partido
-    if (selectedPartido) {
-      result = result.filter(p => p.partido === selectedPartido)
+    // Filtro por partidos (puede seleccionar varios)
+    if (selectedPartidos.length > 0) {
+      result = result.filter(p => selectedPartidos.includes(p.partido))
     }
 
-    // Filtro por tema
-    if (selectedTema) {
-      result = result.filter(p => p.tema === selectedTema)
+    // Filtro por temas (puede seleccionar varios)
+    if (selectedTemas.length > 0) {
+      result = result.filter(p => selectedTemas.includes(p.tema))
     }
 
     // Búsqueda por texto
@@ -76,7 +76,7 @@ export default function HomePage() {
     }
 
     setFilteredPropuestas(result.slice(0, 6)) // Limitar a 6 en la home
-  }, [searchQuery, selectedPartido, selectedTema, propuestas])
+  }, [searchQuery, selectedPartidos, selectedTemas, propuestas])
 
   const handleSearch = () => {
     // La búsqueda ya se aplica automáticamente con useEffect
@@ -123,10 +123,10 @@ export default function HomePage() {
             {/* Sidebar */}
             <aside className="lg:w-64 shrink-0">
               <FilterSidebar 
-                selectedPartido={selectedPartido}
-                onPartidoChange={setSelectedPartido}
-                selectedTema={selectedTema}
-                onTemaChange={setSelectedTema}
+                selectedPartidos={selectedPartidos}
+                onPartidosChange={setSelectedPartidos}
+                selectedTemas={selectedTemas}
+                onTemasChange={setSelectedTemas}
               />
             </aside>
 
@@ -166,8 +166,8 @@ export default function HomePage() {
                         variant="outline" 
                         onClick={() => {
                           setSearchQuery('')
-                          setSelectedPartido('')
-                          setSelectedTema('')
+                          setSelectedPartidos([])
+                          setSelectedTemas([])
                         }}
                       >
                         Limpiar filtros

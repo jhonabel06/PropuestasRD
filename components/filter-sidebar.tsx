@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -17,17 +17,17 @@ interface Partido {
 const temas = ["Educación", "Economía", "Salud", "Transporte", "Seguridad", "Medio Ambiente", "Tecnología", "Turismo"]
 
 interface FilterSidebarProps {
-  selectedPartido: string
-  onPartidoChange: (partido: string) => void
-  selectedTema: string
-  onTemaChange: (tema: string) => void
+  selectedPartidos: string[]
+  onPartidosChange: (partidos: string[]) => void
+  selectedTemas: string[]
+  onTemasChange: (temas: string[]) => void
 }
 
 export function FilterSidebar({ 
-  selectedPartido, 
-  onPartidoChange, 
-  selectedTema, 
-  onTemaChange 
+  selectedPartidos, 
+  onPartidosChange, 
+  selectedTemas, 
+  onTemasChange 
 }: FilterSidebarProps) {
   const [partidos, setPartidos] = useState<Partido[]>([])
 
@@ -45,6 +45,22 @@ export function FilterSidebar({
     }
   }
 
+  const handlePartidoToggle = (partido: string) => {
+    if (selectedPartidos.includes(partido)) {
+      onPartidosChange(selectedPartidos.filter(p => p !== partido))
+    } else {
+      onPartidosChange([...selectedPartidos, partido])
+    }
+  }
+
+  const handleTemaToggle = (tema: string) => {
+    if (selectedTemas.includes(tema)) {
+      onTemasChange(selectedTemas.filter(t => t !== tema))
+    } else {
+      onTemasChange([...selectedTemas, tema])
+    }
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -54,85 +70,71 @@ export function FilterSidebar({
         <div>
           <div className="flex items-center justify-between mb-3">
             <Label className="text-sm font-semibold">Partidos</Label>
-            {selectedPartido && (
+            {selectedPartidos.length > 0 && (
               <Button
                 variant="ghost"
                 size="sm"
                 className="h-auto p-0 text-xs text-gray-500 hover:text-gray-900"
-                onClick={() => onPartidoChange('')}
+                onClick={() => onPartidosChange([])}
               >
                 Limpiar
               </Button>
             )}
           </div>
-          <RadioGroup value={selectedPartido} onValueChange={onPartidoChange}>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="" id="all-partidos" />
+          <div className="space-y-3">
+            {partidos.map((partido) => (
+              <div key={partido.id} className="flex items-center space-x-2">
+                <Checkbox
+                  id={partido.id}
+                  checked={selectedPartidos.includes(partido.nombre)}
+                  onCheckedChange={() => handlePartidoToggle(partido.nombre)}
+                />
                 <label
-                  htmlFor="all-partidos"
-                  className="text-sm font-medium leading-none cursor-pointer"
+                  htmlFor={partido.id}
+                  className="text-sm font-medium leading-none cursor-pointer flex items-center gap-2"
                 >
-                  Todos los partidos
+                  <span
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: partido.color }}
+                  />
+                  {partido.nombre}
                 </label>
               </div>
-              {partidos.map((partido) => (
-                <div key={partido.id} className="flex items-center space-x-2">
-                  <RadioGroupItem value={partido.nombre} id={partido.id} />
-                  <label
-                    htmlFor={partido.id}
-                    className="text-sm font-medium leading-none cursor-pointer flex items-center gap-2"
-                  >
-                    <span
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: partido.color }}
-                    />
-                    {partido.nombre}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </RadioGroup>
+            ))}
+          </div>
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-3">
             <Label className="text-sm font-semibold">Temas</Label>
-            {selectedTema && (
+            {selectedTemas.length > 0 && (
               <Button
                 variant="ghost"
                 size="sm"
                 className="h-auto p-0 text-xs text-gray-500 hover:text-gray-900"
-                onClick={() => onTemaChange('')}
+                onClick={() => onTemasChange([])}
               >
                 Limpiar
               </Button>
             )}
           </div>
-          <RadioGroup value={selectedTema} onValueChange={onTemaChange}>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="" id="all-temas" />
+          <div className="space-y-3">
+            {temas.map((tema) => (
+              <div key={tema} className="flex items-center space-x-2">
+                <Checkbox
+                  id={tema}
+                  checked={selectedTemas.includes(tema)}
+                  onCheckedChange={() => handleTemaToggle(tema)}
+                />
                 <label
-                  htmlFor="all-temas"
+                  htmlFor={tema}
                   className="text-sm font-medium leading-none cursor-pointer"
                 >
-                  Todos los temas
+                  {tema}
                 </label>
               </div>
-              {temas.map((tema) => (
-                <div key={tema} className="flex items-center space-x-2">
-                  <RadioGroupItem value={tema} id={tema} />
-                  <label
-                    htmlFor={tema}
-                    className="text-sm font-medium leading-none cursor-pointer"
-                  >
-                    {tema}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </RadioGroup>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>

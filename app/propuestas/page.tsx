@@ -28,8 +28,8 @@ export default function PropuestasPage() {
   const [filteredPropuestas, setFilteredPropuestas] = useState<Propuesta[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedPartido, setSelectedPartido] = useState('');
-  const [selectedTema, setSelectedTema] = useState('');
+  const [selectedPartidos, setSelectedPartidos] = useState<string[]>([]);
+  const [selectedTemas, setSelectedTemas] = useState<string[]>([]);
 
   // Cargar propuestas
   useEffect(() => {
@@ -55,14 +55,14 @@ export default function PropuestasPage() {
   useEffect(() => {
     let result = [...propuestas];
 
-    // Filtro por partido
-    if (selectedPartido) {
-      result = result.filter(p => p.partido === selectedPartido);
+    // Filtro por partidos (puede seleccionar varios)
+    if (selectedPartidos.length > 0) {
+      result = result.filter(p => selectedPartidos.includes(p.partido));
     }
 
-    // Filtro por tema
-    if (selectedTema) {
-      result = result.filter(p => p.tema === selectedTema);
+    // Filtro por temas (puede seleccionar varios)
+    if (selectedTemas.length > 0) {
+      result = result.filter(p => selectedTemas.includes(p.tema));
     }
 
     // Búsqueda por texto
@@ -76,15 +76,15 @@ export default function PropuestasPage() {
     }
 
     setFilteredPropuestas(result);
-  }, [searchQuery, selectedPartido, selectedTema, propuestas]);
+  }, [searchQuery, selectedPartidos, selectedTemas, propuestas]);
 
   const handleClearFilters = () => {
     setSearchQuery('');
-    setSelectedPartido('');
-    setSelectedTema('');
+    setSelectedPartidos([]);
+    setSelectedTemas([]);
   };
 
-  const hasActiveFilters = searchQuery || selectedPartido || selectedTema;
+  const hasActiveFilters = searchQuery || selectedPartidos.length > 0 || selectedTemas.length > 0;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -109,10 +109,10 @@ export default function PropuestasPage() {
           <aside className="lg:col-span-1">
             <div className="sticky top-4">
               <FilterSidebar
-                selectedPartido={selectedPartido}
-                onPartidoChange={setSelectedPartido}
-                selectedTema={selectedTema}
-                onTemaChange={setSelectedTema}
+                selectedPartidos={selectedPartidos}
+                onPartidosChange={setSelectedPartidos}
+                selectedTemas={selectedTemas}
+                onTemasChange={setSelectedTemas}
               />
             </div>
           </aside>
