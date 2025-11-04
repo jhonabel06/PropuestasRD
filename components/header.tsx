@@ -43,6 +43,12 @@ export function Header() {
           >
             Contacto
           </Link>
+          <Link
+            href="/admin"
+            className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            Admin
+          </Link>
         </nav>
       </div>
     </header>

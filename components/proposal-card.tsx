@@ -14,6 +14,11 @@ interface ProposalCardProps {
   fecha: string
 }
 
+function formatDate(dateString: string) {
+  const date = new Date(dateString)
+  return date.toLocaleDateString("es-DO", { year: "numeric", month: "short", day: "numeric" })
+}
+
 export function ProposalCard({ id, partido, partidoColor, titulo, resumen, tema, fecha }: ProposalCardProps) {
   return (
     <Card className="h-full flex flex-col hover:shadow-lg transition-shadow">
@@ -32,7 +37,7 @@ export function ProposalCard({ id, partido, partidoColor, titulo, resumen, tema,
       <CardFooter className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <Calendar className="h-3 w-3" />
-          <span>{fecha}</span>
+          <span>{formatDate(fecha)}</span>
         </div>
         <Button asChild size="sm">
           <Link href={`/propuestas/${id}`}>Ver más</Link>

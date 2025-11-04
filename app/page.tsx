@@ -5,72 +5,11 @@ import { FilterSidebar } from "@/components/filter-sidebar"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { getPropuestas } from "@/lib/propuestas"
 
-// Mock data - En producción vendría de una base de datos
-const propuestas = [
-  {
-    id: "1",
-    partido: "PRM",
-    partidoColor: "#00A651",
-    titulo: "Plan Nacional de Alfabetización Digital",
-    resumen:
-      "Implementar un programa integral de alfabetización digital para estudiantes de escuelas públicas, incluyendo equipamiento tecnológico y capacitación docente.",
-    tema: "Educación",
-    fecha: "15 Ene 2025",
-  },
-  {
-    id: "2",
-    partido: "PLD",
-    partidoColor: "#8B4789",
-    titulo: "Reforma del Sistema de Salud Pública",
-    resumen:
-      "Modernización de hospitales públicos y ampliación de cobertura del seguro nacional de salud para garantizar atención médica universal.",
-    tema: "Salud",
-    fecha: "12 Ene 2025",
-  },
-  {
-    id: "3",
-    partido: "Fuerza del Pueblo",
-    partidoColor: "#FF6B35",
-    titulo: "Metro de Santo Domingo - Expansión Línea 3",
-    resumen:
-      "Construcción de la tercera línea del Metro de Santo Domingo conectando sectores del norte con el centro histórico.",
-    tema: "Transporte",
-    fecha: "10 Ene 2025",
-  },
-  {
-    id: "4",
-    partido: "PRSC",
-    partidoColor: "#DC143C",
-    titulo: "Incentivos Fiscales para PYMES",
-    resumen:
-      "Reducción de impuestos y facilidades de financiamiento para pequeñas y medianas empresas durante los primeros tres años de operación.",
-    tema: "Economía",
-    fecha: "8 Ene 2025",
-  },
-  {
-    id: "5",
-    partido: "PRM",
-    partidoColor: "#00A651",
-    titulo: "Programa de Energías Renovables",
-    resumen:
-      "Inversión en parques solares y eólicos para alcanzar el 50% de energía renovable en la matriz energética nacional para 2030.",
-    tema: "Medio Ambiente",
-    fecha: "5 Ene 2025",
-  },
-  {
-    id: "6",
-    partido: "PLD",
-    partidoColor: "#8B4789",
-    titulo: "Modernización de la Policía Nacional",
-    resumen:
-      "Equipamiento tecnológico, capacitación continua y mejora salarial para los miembros de la Policía Nacional.",
-    tema: "Seguridad",
-    fecha: "3 Ene 2025",
-  },
-]
+export default async function HomePage() {
+  const propuestas = getPropuestas()
 
-export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "partido": "PRM",
+    "partidoColor": "#00A651",
+    "titulo": "Plan Nacional de Alfabetización Digital",
+    "resumen": "Implementar un programa integral de alfabetización digital para estudiantes de escuelas públicas, incluyendo equipamiento tecnológico y capacitación docente.",
+    "tema": "Educación",
+    "fecha": "2025-01-15",
+    "autor": "Comisión de Educación - PRM",
+    "fuenteOficial": "https://ejemplo.com/propuesta-educacion",
+    "descripcion": "<h2>Resumen Ejecutivo</h2><p>El Plan Nacional de Alfabetización Digital busca cerrar la brecha tecnológica en el sistema educativo dominicano, garantizando que todos los estudiantes de escuelas públicas tengan acceso a herramientas digitales y desarrollen competencias tecnológicas esenciales para el siglo XXI.</p><h2>Objetivos Principales</h2><ul><li>Equipar 5,000 aulas con computadoras y acceso a internet de alta velocidad</li><li>Capacitar a 20,000 docentes en metodologías de enseñanza digital</li><li>Desarrollar contenido educativo digital adaptado al currículo nacional</li><li>Implementar plataformas de aprendizaje en línea accesibles para todos los estudiantes</li></ul><h2>Fases de Implementación</h2><p><strong>Fase 1 (Año 1):</strong> Diagnóstico nacional de infraestructura tecnológica y capacitación inicial de docentes en 500 escuelas piloto.</p><p><strong>Fase 2 (Año 2-3):</strong> Expansión del programa a 2,000 escuelas adicionales y desarrollo de contenido educativo digital.</p><p><strong>Fase 3 (Año 4-5):</strong> Cobertura nacional completa y evaluación de impacto en el aprendizaje estudiantil.</p><h2>Presupuesto Estimado</h2><p>El programa requiere una inversión de RD$3,500 millones distribuidos en cinco años, financiados mediante el presupuesto nacional de educación y cooperación internacional.</p><h2>Impacto Esperado</h2><p>Se espera que al finalizar el programa, el 95% de los estudiantes de escuelas públicas tengan competencias digitales básicas, mejorando su empleabilidad futura y reduciendo la desigualdad educativa.</p>"
+  },
+  {
+    "id": "2",
+    "partido": "PLD",
+    "partidoColor": "#8B4789",
+    "titulo": "Reforma del Sistema de Salud Pública",
+    "resumen": "Modernización de hospitales públicos y ampliación de cobertura del seguro nacional de salud para garantizar atención médica universal.",
+    "tema": "Salud",
+    "fecha": "2025-01-12",
+    "autor": "Comisión de Salud - PLD",
+    "fuenteOficial": "https://ejemplo.com/propuesta-salud",
+    "descripcion": "<h2>Propuesta de Reforma</h2><p>Esta propuesta busca transformar el sistema de salud pública dominicano mediante inversión en infraestructura, capacitación de personal médico y ampliación de cobertura.</p>"
+  },
+  {
+    "id": "3",
+    "partido": "Fuerza del Pueblo",
+    "partidoColor": "#FF6B35",
+    "titulo": "Metro de Santo Domingo - Expansión Línea 3",
+    "resumen": "Construcción de la tercera línea del Metro de Santo Domingo conectando sectores del norte con el centro histórico.",
+    "tema": "Transporte",
+    "fecha": "2025-01-10",
+    "autor": "Comisión de Transporte - FP",
+    "fuenteOficial": "https://ejemplo.com/propuesta-metro",
+    "descripcion": "<h2>Proyecto Metro Línea 3</h2><p>Expansión del sistema de transporte público mediante la construcción de una nueva línea que beneficiará a más de 500,000 ciudadanos.</p>"
+  },
+  {
+    "id": "4",
+    "partido": "PRSC",
+    "partidoColor": "#DC143C",
+    "titulo": "Incentivos Fiscales para PYMES",
+    "resumen": "Reducción de impuestos y facilidades de financiamiento para pequeñas y medianas empresas durante los primeros tres años de operación.",
+    "tema": "Economía",
+    "fecha": "2025-01-08",
+    "autor": "Comisión Económica - PRSC",
+    "fuenteOficial": "https://ejemplo.com/propuesta-pymes",
+    "descripcion": "<h2>Apoyo a las PYMES</h2><p>Plan integral de incentivos fiscales y financieros para impulsar el emprendimiento y fortalecer las pequeñas y medianas empresas dominicanas.</p>"
+  },
+  {
+    "id": "5",
+    "partido": "PRM",
+    "partidoColor": "#00A651",
+    "titulo": "Programa de Energías Renovables",
+    "resumen": "Inversión en parques solares y eólicos para alcanzar el 50% de energía renovable en la matriz energética nacional para 2030.",
+    "tema": "Medio Ambiente",
+    "fecha": "2025-01-05",
+    "autor": "Comisión de Medio Ambiente - PRM",
+    "fuenteOficial": "https://ejemplo.com/propuesta-energia",
+    "descripcion": "<h2>Energía Limpia para RD</h2><p>Transición hacia fuentes de energía renovable mediante inversión en infraestructura solar y eólica, reduciendo la dependencia de combustibles fósiles.</p>"
+  },
+  {
+    "id": "6",
+    "partido": "PLD",
+    "partidoColor": "#8B4789",
+    "titulo": "Modernización de la Policía Nacional",
+    "resumen": "Equipamiento tecnológico, capacitación continua y mejora salarial para los miembros de la Policía Nacional.",
+    "tema": "Seguridad",
+    "fecha": "2025-01-03",
+    "autor": "Comisión de Seguridad - PLD",
+    "fuenteOficial": "https://ejemplo.com/propuesta-policia",
+    "descripcion": "<h2>Fortalecimiento Policial</h2><p>Plan integral para modernizar la Policía Nacional con tecnología de punta, mejor capacitación y condiciones laborales dignas.</p>"
+  }
+]
