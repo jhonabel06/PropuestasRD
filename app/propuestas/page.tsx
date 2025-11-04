@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
 import { ProposalCard } from '@/components/proposal-card';
 import { FilterSidebar } from '@/components/filter-sidebar';
 import { Input } from '@/components/ui/input';
@@ -85,18 +87,21 @@ export default function PropuestasPage() {
   const hasActiveFilters = searchQuery || selectedPartido || selectedTema;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Propuestas Políticas
-          </h1>
-          <p className="text-gray-600">
-            Explora las propuestas de los partidos políticos de República Dominicana
-          </p>
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      
+      <div className="flex-1 bg-gray-50">
+        {/* Page Header */}
+        <div className="bg-white border-b">
+          <div className="container mx-auto px-4 py-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              Propuestas Políticas
+            </h1>
+            <p className="text-gray-600">
+              Explora las propuestas de los partidos políticos de República Dominicana
+            </p>
+          </div>
         </div>
-      </div>
 
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -192,6 +197,9 @@ export default function PropuestasPage() {
           </main>
         </div>
       </div>
+      </div>
+      
+      <Footer />
     </div>
   );
 }
