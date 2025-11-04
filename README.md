@@ -86,16 +86,20 @@ propuestas-rd/
 - Footer con enlaces
 - Diseño responsive
 - Modo oscuro/claro
-- 6 propuestas de ejemplo (mock data)
+- **Panel de administración protegido con login**
+- **Sistema de autenticación con JWT**
+- **API REST completa para CRUD de propuestas**
+- **Almacenamiento en JSON** (fácil migración a BD)
+- **Notificaciones toast** para feedback
 
 ⚠️ **Pendiente:**
-- Conexión a base de datos
+- Conexión a base de datos real
 - Páginas: /partidos, /noticias, /contacto completas
 - Sistema de búsqueda funcional
-- Sistema de autenticación
-- Panel de administración
 - Paginación
 - Menú mobile
+- Editor WYSIWYG para descripciones
+- Subida de imágenes
 
 ## 🎯 Partidos Políticos Configurados
 
@@ -124,6 +128,32 @@ El proyecto utiliza:
 - **ESLint** (ignorado durante builds)
 - **Tailwind CSS** con variables CSS personalizadas
 - **Shadcn/UI** con estilo "New York"
+
+### 🔐 Configuración de Autenticación
+
+El panel de administración está protegido con usuario y contraseña. Para configurar las credenciales:
+
+1. Copia el archivo `.env.example` a `.env.local`:
+```bash
+cp .env.example .env.local
+```
+
+2. Edita `.env.local` y cambia las credenciales:
+```bash
+ADMIN_USERNAME=tu-usuario
+ADMIN_PASSWORD=tu-contraseña-segura
+JWT_SECRET=tu-clave-secreta-super-segura-aleatoria
+```
+
+3. **Credenciales por defecto**:
+   - Usuario: `admin`
+   - Contraseña: `PropuestasRD2028!`
+   
+   ⚠️ **IMPORTANTE**: Cambia estas credenciales antes de desplegar en producción.
+
+4. **Acceso al panel de administración**:
+   - Login: http://localhost:3000/admin/login
+   - Panel: http://localhost:3000/admin (requiere autenticación)
 
 ## 🌐 Despliegue
 

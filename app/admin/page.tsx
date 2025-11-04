@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -10,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Trash2, Edit2, Plus, Save, X } from "lucide-react"
+import { Trash2, Edit2, Plus, Save, X, LogOut } from "lucide-react"
 import { toast } from "sonner"
 
 interface Propuesta {
@@ -45,6 +46,8 @@ const TEMAS = [
 ]
 
 export default function AdminPage() {
+  const router = useRouter()
+  const [authenticated, setAuthenticated] = useState(false)
   const [propuestas, setPropuestas] = useState<Propuesta[]>([])
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -62,8 +65,32 @@ export default function AdminPage() {
   })
 
   useEffect(() => {
-    loadPropuestas()
+    checkAuth()
   }, [])
+
+  const checkAuth = async () => {
+    try {
+      const response = await fetch("/api/auth/verify")
+      if (response.ok) {
+        setAuthenticated(true)
+        loadPropuestas()
+      } else {
+        router.push("/admin/login")
+      }
+    } catch (error) {
+      router.push("/admin/login")
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" })
+      toast.success("Sesión cerrada")
+      router.push("/admin/login")
+    } catch (error) {
+      toast.error("Error al cerrar sesión")
+    }
+  }
 
   const loadPropuestas = async () => {
     try {
@@ -175,7 +202,7 @@ export default function AdminPage() {
     setShowForm(false)
   }
 
-  if (loading) {
+  if (loading || !authenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p>Cargando...</p>
@@ -194,17 +221,22 @@ export default function AdminPage() {
               <h1 className="text-3xl font-bold text-foreground mb-2">Panel de Administración</h1>
               <p className="text-muted-foreground">Gestiona las propuestas de los partidos políticos</p>
             </div>
-            <Button onClick={() => setShowForm(!showForm)} size="lg">
-              {showForm ? (
-                <>
-                  <X className="mr-2 h-4 w-4" /> Cancelar
-                </>
-              ) : (
-                <>
-                  <Plus className="mr-2 h-4 w-4" /> Nueva Propuesta
-                </>
-              )}
-            </Button>
+            <div className="flex gap-3">
+              <Button onClick={() => setShowForm(!showForm)} size="lg">
+                {showForm ? (
+                  <>
+                    <X className="mr-2 h-4 w-4" /> Cancelar
+                  </>
+                ) : (
+                  <>
+                    <Plus className="mr-2 h-4 w-4" /> Nueva Propuesta
+                  </>
+                )}
+              </Button>
+              <Button onClick={handleLogout} variant="outline" size="lg">
+                <LogOut className="mr-2 h-4 w-4" /> Cerrar Sesión
+              </Button>
+            </div>
           </div>
 
           {/* Formulario */}
